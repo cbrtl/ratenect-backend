@@ -4,7 +4,7 @@
   "description": "a web/mobile platform with a two-way rating system",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node src"
   },
   "author": "Ankur Khandelwal",
   "license": "ISC",

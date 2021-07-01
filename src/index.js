@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-require("dotenv").config();
+require("dotenv").config({ path: '../.env' });
 
 const db_user = process.env.db_user;
 const db_pwd = process.env.db_pwd;

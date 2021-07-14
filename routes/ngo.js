@@ -31,6 +31,7 @@ router.post("/ngosignup", (req, res) => {
 	});
 });
 
+// Ngo Login
 router.post("/ngologin", (req, res) => {
 	const email = req.body.email;
 	const password = req.body.password;

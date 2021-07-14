@@ -5,6 +5,7 @@ const router = express.Router();
 const Ngo = require("../models/ngo");
 const Campaign = require("../models/campaign.js");
 
+// Ngo Signup
 router.post("/ngosignup", (req, res) => {
 	Ngo.findOne({ email: req.body.email }).exec((error, ngo) => {
 		if (ngo)

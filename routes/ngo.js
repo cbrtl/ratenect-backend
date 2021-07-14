@@ -46,7 +46,7 @@ router.post("/ngologin", (req, res) => {
 	});
 });
 
-//Create Campaign
+//Ngo Create Campaign
 router.post("/createCampaign", (req, res) => {
 	const cname = req.body.cname;
 	const description = req.body.description;

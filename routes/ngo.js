@@ -1,4 +1,6 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const router = express.Router();
 const Ngo = require("../models/ngo");
 const Campaign = require("../models/campaign.js");
@@ -25,6 +27,20 @@ router.post("/ngosignup", (req, res) => {
 				res.status(400).json({ message: "Passwords don't match" });
 			}
 		}
+	});
+});
+
+router.post("/ngologin", (req, res) => {
+	const email = req.body.email;
+	const password = req.body.password;
+	Ngo.findOne({ email: email }).exec((error, ngo) => {
+		if (error) return res.status(400).json({ error });
+		if (ngo) {
+			if (ngo.authenticate(password)) {
+				const token = jwt.sign({ _id: ngo._id }, process.env.secret_key, { expiresIn: "1h" });
+				return res.status(201).json({ message: "Successfully Logged in.", token, ngo });
+			} else return res.status(400).json({ message: "User couldn't be authenticated." });
+		} else return res.status(400).json({ message: "NGO not found." });
 	});
 });
 

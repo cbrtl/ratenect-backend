@@ -1,5 +1,5 @@
 # Ratenect
-! [Ratenect Banner] (images/banner.png)
+![Ratenect Banner](images/banner.png)
 <br><br> 
 Ratenect is a web platfrom with a two-way rating system where the users can find NGOs near them and can apply to volunteer in-person for their public activities. Based on their experience the NGOs can rate the volunteers and vice-versa.
 <br><br>

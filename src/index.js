@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const env = require('dotenv');
-const ngoRoutes = require('../routes/ngo');
+const env = require("dotenv");
+const ngoRoutes = require("../routes/ngo");
 
 const app = express();
 
@@ -18,18 +18,20 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.json());
-app.use('/api',ngoRoutes);
+app.use("/api", ngoRoutes);
 
-mongoose.connect(
-	`mongodb+srv://${db_user}:${db_pwd}@${db_id}.mongodb.net/${db_name}?retryWrites=true&w=majority`,
-	{ 
-		useNewUrlParser: true, 
-		useUnifiedTopology: true,
-		useCreateIndex: true
-	}
-).then(()=> {
-	console.log('Database connected.');
-});
+mongoose
+	.connect(
+		`mongodb+srv://${db_user}:${db_pwd}@dev.yt0g9.mongodb.net/${db_name}?retryWrites=true&w=majority`,
+		{
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			useCreateIndex: true,
+		}
+	)
+	.then(() => {
+		console.log("Database connected.");
+	});
 
 app.listen(port, () => {
 	console.log(`Server started at port ${port}`);

@@ -17,7 +17,7 @@ Read more details about the project inspiration [here](https://cbrtl.github.io/p
   - **Database Schema**: [dbdiagram](https://dbdiagram.io/d/60f164684ed9be1c05cfa3bf)
  
 
- ## Project Setup
+ ## Run Project
  - Clone the repository
  - `cd` into the `ratenect-backend` folder
  - switch to dev branch `git checkout dev`
@@ -45,3 +45,22 @@ Read more details about the project inspiration [here](https://cbrtl.github.io/p
  5. Commit the changes in your local system and `git push` to the upstream.
  6. Come back to ratenect's github page and make a pull request from `you:<your-branch>` to `cbrtl:dev`.
  7. Introduce yourself in the comment section of the first post on Discussions tab.
+======
+## Project Setup
+
+- Clone the repository
+- `cd` into the `ratenect-backend` folder
+- Switch to `dev` branch by running `git checkout dev`
+- Run `npm install`
+- Run `npm run dev`
+- Visit http://localhost:3000/ in your browser
+
+## Contributing:
+
+- Fork this repo
+- Clone the forked repository
+- `cd` into the `ratenect-backend` folder
+- Create a new branch `my-feature`.
+- Make your changes and commit.
+- Come back to ratenect's github page and make a pull request from `you:my-feature` to `cbrtl:dev`.
+

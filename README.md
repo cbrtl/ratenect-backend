@@ -1,4 +1,3 @@
-<<<<<<contributing-guidelines
 # Ratenect
 ! [Ratenect Banner] (images/banner.png)
 <br><br> 
@@ -18,7 +17,7 @@ Read more details about the project inspiration [here](https://cbrtl.github.io/p
   - **Database Schema**: [dbdiagram](https://dbdiagram.io/d/60f164684ed9be1c05cfa3bf)
  
 
- ## Project Setup
+ ## Run Project
  - Clone the repository
  - `cd` into the `ratenect-backend` folder
  - switch to dev branch `git checkout dev`
@@ -64,4 +63,4 @@ Read more details about the project inspiration [here](https://cbrtl.github.io/p
 - Create a new branch `my-feature`.
 - Make your changes and commit.
 - Come back to ratenect's github page and make a pull request from `you:my-feature` to `cbrtl:dev`.
->>>>>>dev
+

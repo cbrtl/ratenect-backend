@@ -14,7 +14,7 @@ Read more details about the project inspiration [here](https://cbrtl.github.io/p
 
 ## Plan
   - **UI**: [Figma](https://www.figma.com/file/W7mgBV73gMNZRFjuEewyDN/ratenect?node-id=0%3A1)
-  - **Database Schema**: [dbdiagram](https://dbdiagram.io/d/60f164684ed9be1c05cfa3bf)
+  - **Database Schema**: [dbdiagram](https://dbdiagram.io/d/60e010ba0b1d8a6d39650956)
  
 
  ## Run Project

@@ -45,6 +45,5 @@ Read more details about the project inspiration [here](https://cbrtl.github.io/p
  4. Switch to your new branch and add your github username to the `contributors.md` file.
  5. Commit the changes in your local system and `git push` to the upstream.
  6. Come back to ratenect's github page and make a pull request from `you:<your-branch>` to `cbrtl:dev`.
- 7. Introduce yourself in the comment section of the first post on Discussions tab.
 
 

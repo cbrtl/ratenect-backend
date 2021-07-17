@@ -26,7 +26,7 @@ We Use [Github Flow](https://guides.github.com/introduction/flow/index.html), So
 
 
 ### Coding Style
-To ensure a consistent coding style, we follow the [Prettier](https://prettier.io/docs/en/index.html) format. Make sure you write the code in the same style. You can run `npx prettier --write .` in the root directory to format all the code in Prettier standards.
+To ensure a consistent coding style, we use the [Prettier](https://prettier.io/docs/en/index.html) formatter. Make sure that before commiting, you run `npx prettier --write .` in the terminal to format all the code as per `.prettierrc`.
 
 
 

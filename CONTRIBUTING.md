@@ -1,4 +1,4 @@
-# Contributing Guidlines
+# Contributing Guidelines
 
 Thank you for your interest in Ratenect. We welcome you to contribute to our project. To maintain the coding as well as ethical standards, we require you to go through the following guidelines.
 

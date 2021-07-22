@@ -9,6 +9,7 @@ env.config();
 
 const db_user = process.env.db_user;
 const db_pwd = process.env.db_pwd;
+const db_id = process.env.db_id;
 const db_name = process.env.db_name;
 const port = process.env.PORT;
 
@@ -21,7 +22,7 @@ app.use("/api", ngoRoutes);
 
 mongoose
 	.connect(
-		`mongodb+srv://${db_user}:${db_pwd}@dev.yt0g9.mongodb.net/${db_name}?retryWrites=true&w=majority`,
+		`mongodb+srv://${db_user}:${db_pwd}@${db_id}.mongodb.net/${db_name}?retryWrites=true&w=majority`,
 		{
 			useNewUrlParser: true,
 			useUnifiedTopology: true,

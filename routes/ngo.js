@@ -9,23 +9,23 @@ const Campaign = require("../models/campaign.js");
 router.post("/ngosignup", (req, res) => {
 	Ngo.findOne({ email: req.body.email }).exec((error, ngo) => {
 		if (ngo)
-			return res.status(400).json({
+			return res.status(200).json({
 				message: "Account already exists.",
 			});
 		else {
 			const name = req.body.name;
 			const email = req.body.email;
 			const password = req.body.password;
-			const cnfPassword = req.body.cnfPassword;
+			const cnfPassword = req.body.cpassword;
 			if (password === cnfPassword) {
 				const newNGO = new Ngo({ name, email, password });
 
 				newNGO.save((error, data) => {
-					if (error) return res.status(400).json({ message: error.message });
-					if (data) return res.status(201).json({ newNGO: data });
+					if (error) return res.status(401).json({ message: error.message });
+					if (data) return res.status(201).json({ message: "Account created successfully",newNGO: data });
 				});
 			} else {
-				res.status(400).json({ message: "Passwords don't match" });
+				res.status(200).json({ message: "Passwords don't match" });
 			}
 		}
 	});

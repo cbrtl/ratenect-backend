@@ -71,4 +71,24 @@ router.post("/createCampaign", (req, res) => {
 		});
 	}
 });
+
+//SEARCH FUNCTIONALITY
+router.get('/searchngos', function(req, res){
+	const data = req.query;
+	Ngo.find({
+		name: {$regex: data.name, $options: '$i'},
+		//type: {$regex: data.type, $options: '$i'}, //should have some default value
+	    //location: {$regex: data.location, $options: '$i'}, //should have some default value
+		//rating: {$regex: data.rating, $options: '$i'}, //should have some default value
+	}).exec((error, foundNgos)=>{
+		if(error) res.status(400).json(error);
+		else{
+			if(foundNgos)  res.status(200).json(foundNgos);
+			else res.status(400).json({ message: "No results found."});
+		}
+	})
+	
+})
+
+
 module.exports = router;

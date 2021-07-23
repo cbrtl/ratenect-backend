@@ -5,13 +5,13 @@ const ngoRoutes = require("../routes/ngo");
 const cors =require('cors')
 const app = express();
 
-env.config();
+env.config({path: "../.env"});
 
 const db_user = process.env.db_user;
 const db_pwd = process.env.db_pwd;
 const db_id = process.env.db_id;
 const db_name = process.env.db_name;
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.use(cors())

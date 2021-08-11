@@ -1,16 +1,22 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const env = require("dotenv");
-const ngoRoutes = require("../routes/ngo");
 const cors =require('cors')
 const app = express();
+const session = require("express-session");
+const passport = require("passport");
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const ngoRoutes = require("../routes/ngo");
+const userRoutes = require("../routes/user");
+const Ngo = require("../models/ngo");
+const User = require("../models/user");
 
 env.config({path: "../.env"});
 
-const db_user = process.env.db_user;
-const db_pwd = process.env.db_pwd;
-const db_id = process.env.db_id;
-const db_name = process.env.db_name;
+const dbUser = process.env.dbUser;
+const dbPwd = process.env.dbPwd;
+const dbId = process.env.dbId;
+const dbName = process.env.dbName;
 const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
@@ -18,11 +24,20 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.json());
-app.use("/api", ngoRoutes);
+
+
+app.use(session({
+  secret: process.env.secret,
+  resave: false,
+  saveUninitialized: false,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 mongoose
 	.connect(
-		`mongodb+srv://${db_user}:${db_pwd}@${db_id}.mongodb.net/${db_name}?retryWrites=true&w=majority`,
+		`mongodb+srv://${dbUser}:${dbPwd}@${dbId}.mongodb.net/${dbName}?retryWrites=true&w=majority`,
 		{
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
@@ -33,6 +48,30 @@ mongoose
 		console.log("Database connected.");
 	});
 
+var userType = "";
+passport.serializeUser(function(userObject, done) {
+	userType = userObject.schemaType;
+	console.log(userType);
+	done(null, userObject.id);
+});
+	
+passport.deserializeUser(function(id, done) {
+	if(userType === "NGO"){
+		Ngo.findById(id, function(err, ngo) {
+			done(err, ngo);
+		});
+	}
+	else if(userType === "USER"){
+		User.findById(id, function(err, user) {
+			done(err, user);
+		});
+	}
+});
+
+
+app.use("/api", ngoRoutes);
+app.use("/api", userRoutes);
+
 app.listen(port, () => {
 	console.log(`Server started at port ${port}`);
 });
@@ -40,3 +79,14 @@ app.listen(port, () => {
 app.get("/", (_, res) => {
 	res.send("<h1>Welcome to Ratenect!<h1>");
 });
+
+//TEST TO CHECK AUTHENTICATION
+app.get("/testuser", (req, res)=>{
+	if(req.isAuthenticated() && userType==="USER") res.json({message:"Welcome to Ratenect!"});
+	else res.json({message:"Authentication unsuccessful"});
+})
+
+app.get("/testngo", (req, res)=>{
+	if(req.isAuthenticated() && userType==="NGO") res.json({message:"Welcome to Ratenect!"});
+	else res.json({message:"Authentication unsuccessful"});
+})

@@ -1,49 +1,166 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const router = express.Router();
+const passport = require("passport");
 const Ngo = require("../models/ngo");
 const Campaign = require("../models/campaign.js");
 
 // Ngo Signup
-router.post("/ngosignup", (req, res) => {
-	Ngo.findOne({ email: req.body.email }).exec((error, ngo) => {
-		if (ngo)
-			return res.status(200).json({
-				message: "Account already exists.",
-			});
-		else {
-			const name = req.body.name;
-			const email = req.body.email;
-			const password = req.body.password;
-			const cnfPassword = req.body.cpassword;
-			if (password === cnfPassword) {
-				const newNGO = new Ngo({ name, email, password });
+router.post('/ngosignup', (req, res)=>{
+  Ngo.register({name: req.body.name, email: req.body.email}, req.body.password, function(err, ngo){
+		if (err) return res.status(401).json({ message: err.message });
+    else{
+			if (ngo) return res.status(201).json({ message: "Account created successfully", newNGO: ngo });
+			else return res.status(400).json({ message: "Sorry. Your account couldn't be created"});
+    }
+  })
+})
 
-				newNGO.save((error, data) => {
-					if (error) return res.status(401).json({ message: error.message });
-					if (data) return res.status(201).json({ message: "Account created successfully",newNGO: data });
-				});
-			} else {
-				res.status(200).json({ message: "Passwords don't match" });
-			}
-		}
-	});
-});
+router.post('/ngologin', (req, res)=>{
+  const ngo = new Ngo({
+    email: req.body.email,
+    password: req.body.password
+  })
+  req.login(ngo, (error)=>{
+    if(error) res.json({message: error.message});
+    else{
+      passport.authenticate("ngo-local")(req, res, function(){
+        res.json({message: "You have successfully logged in"});
+      })
+    }
+  })
+})
 
-router.post("/ngologin", (req, res) => {
-	const email = req.body.email;
-	const password = req.body.password;
-	Ngo.findOne({ email: email }).exec((error, ngo) => {
-		if (error) return res.status(400).json({ error });
-		if (ngo) {
-			if (ngo.authenticate(password)) {
-				const token = jwt.sign({ _id: ngo._id }, process.env.secret_key, { expiresIn: "1h" });
-				return res.status(201).json({ message: "Successfully Logged in.", token, ngo });
-			} else return res.status(400).json({ message: "User couldn't be authenticated." });
-		} else return res.status(400).json({ message: "NGO not found." });
-	});
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Create Campaign
 router.post("/createCampaign", (req, res) => {

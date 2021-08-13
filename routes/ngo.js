@@ -1,58 +1,42 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const router = express.Router();
+const passport = require("passport");
 const Ngo = require("../models/ngo");
 const Campaign = require("../models/campaign.js");
 
 // Ngo Signup
 router.post("/ngosignup", (req, res) => {
-	Ngo.findOne({ email: req.body.email }).exec((error, ngo) => {
-		if (ngo)
-			return res.status(200).json({
-				message: "Account already exists.",
-			});
+	const { name, email, password } = req.body;
+	Ngo.register({ name, email }, password, function (err, ngo) {
+		if (err) return res.status(401).json({ message: err.message });
 		else {
-			const name = req.body.name;
-			const email = req.body.email;
-			const password = req.body.password;
-			const cnfPassword = req.body.cpassword;
-			if (password === cnfPassword) {
-				const newNGO = new Ngo({ name, email, password });
-
-				newNGO.save((error, data) => {
-					if (error) return res.status(401).json({ message: error.message });
-					if (data) return res.status(201).json({ message: "Account created successfully",newNGO: data });
-				});
-			} else {
-				res.status(200).json({ message: "Passwords don't match" });
-			}
+			if (ngo)
+				return res.status(201).json({ message: "Account created successfully", newNGO: ngo });
+			else return res.status(400).json({ message: "Sorry. Your account couldn't be created" });
 		}
 	});
 });
 
 router.post("/ngologin", (req, res) => {
-	const email = req.body.email;
-	const password = req.body.password;
-	Ngo.findOne({ email: email }).exec((error, ngo) => {
-		if (error) return res.status(400).json({ error });
-		if (ngo) {
-			if (ngo.authenticate(password)) {
-				const token = jwt.sign({ _id: ngo._id }, process.env.secret_key, { expiresIn: "1h" });
-				return res.status(201).json({ message: "Successfully Logged in.", token, ngo });
-			} else return res.status(400).json({ message: "User couldn't be authenticated." });
-		} else return res.status(400).json({ message: "NGO not found." });
+	const { email, password } = req.body;
+	const ngo = new Ngo({
+		email,
+		password,
+	});
+	req.login(ngo, error => {
+		if (error) res.json({ message: error.message });
+		else {
+			passport.authenticate("ngo-local")(req, res, function () {
+				res.json({ message: "You have successfully logged in" });
+			});
+		}
 	});
 });
 
 //Create Campaign
 router.post("/createCampaign", (req, res) => {
-	const cname = req.body.cname;
-	const description = req.body.description;
-	const startDate = req.body.startDate;
-	const endDate = req.body.endDate;
-	const category = req.body.category;
-	const createdBy = req.body.createdBy;
+	const { cname, description, startDate, endDate, category, createdBy } = req.body;
 
 	if (cname && description && startDate && endDate && category && createdBy) {
 		// console.log(cname, description, startDate, endDate, category);
@@ -74,22 +58,20 @@ router.post("/createCampaign", (req, res) => {
 });
 
 //SEARCH FUNCTIONALITY
-router.get('/searchngos', function(req, res){
+router.get("/searchngos", function (req, res) {
 	const data = req.query;
 	Ngo.find({
-		name: {$regex: data.name, $options: '$i'},
+		name: { $regex: data.name, $options: "$i" },
 		//type: {$regex: data.type, $options: '$i'}, //should have some default value
-	    //location: {$regex: data.location, $options: '$i'}, //should have some default value
+		//location: {$regex: data.location, $options: '$i'}, //should have some default value
 		//rating: {$regex: data.rating, $options: '$i'}, //should have some default value
-	}).exec((error, foundNgos)=>{
-		if(error) res.status(400).json(error);
-		else{
-			if(foundNgos)  res.status(200).json(foundNgos);
-			else res.status(400).json({ message: "No results found."});
+	}).exec((error, foundNgos) => {
+		if (error) res.status(400).json(error);
+		else {
+			if (foundNgos) res.status(200).json(foundNgos);
+			else res.status(400).json({ message: "No results found." });
 		}
-	})
-	
-})
-
+	});
+});
 
 module.exports = router;

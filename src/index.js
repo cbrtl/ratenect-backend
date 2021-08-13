@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const env = require("dotenv");
 const cors = require("cors");
+
 const app = express();
 const session = require("express-session");
 const passport = require("passport");
@@ -46,18 +47,18 @@ mongoose
 	});
 
 let userType = "";
-passport.serializeUser(function (userObject, done) {
+passport.serializeUser((userObject, done) => {
 	userType = userObject.schemaType;
 	done(null, userObject.id);
 });
 
-passport.deserializeUser(function (id, done) {
+passport.deserializeUser((id, done) => {
 	if (userType === "NGO") {
-		Ngo.findById(id, function (err, ngo) {
+		Ngo.findById(id, (err, ngo) => {
 			done(err, ngo);
 		});
 	} else if (userType === "USER") {
-		User.findById(id, function (err, user) {
+		User.findById(id, (err, user) => {
 			done(err, user);
 		});
 	}
@@ -74,7 +75,7 @@ app.get("/", (_, res) => {
 	res.send("<h1>Welcome to Ratenect!<h1>");
 });
 
-//TEST TO CHECK AUTHENTICATION
+// TEST TO CHECK AUTHENTICATION
 app.get("/testuser", (req, res) => {
 	if (req.isAuthenticated() && userType === "USER") res.json({ message: "Welcome to Ratenect!" });
 	else res.json({ message: "Authentication unsuccessful" });

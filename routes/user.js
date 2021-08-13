@@ -1,17 +1,16 @@
 const express = require("express");
-const router = express.Router();
-const User = require("../models/user");
-const passport = require("passport");
 
-router.post("/usersignup", function (req, res) {
+const router = express.Router();
+const passport = require("passport");
+const User = require("../models/user");
+
+router.post("/usersignup", (req, res) => {
 	const { name, email, password } = req.body;
-	User.register({ name, email }, password, function (err, user) {
+	User.register({ name, email }, password, (err, user) => {
 		if (err) return res.status(401).json({ message: err.message });
-		else {
-			if (user)
-				return res.status(201).json({ message: "Account created successfully", newUser: user });
-			else return res.status(400).json({ message: "Sorry. Your account couldn't be created" });
-		}
+		if (user)
+			return res.status(201).json({ message: "Account created successfully", newUser: user });
+		return res.status(400).json({ message: "Sorry. Your account couldn't be created" });
 	});
 });
 
@@ -24,7 +23,7 @@ router.post("/userlogin", (req, res) => {
 	req.login(user, error => {
 		if (error) res.json({ message: error.message });
 		else {
-			passport.authenticate("user-local")(req, res, function () {
+			passport.authenticate("user-local")(req, res, () => {
 				res.json({ message: "You have successfully logged in" });
 			});
 		}

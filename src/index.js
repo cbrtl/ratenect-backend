@@ -45,10 +45,9 @@ mongoose
 		console.log("Database connected.");
 	});
 
-var userType = "";
+let userType = "";
 passport.serializeUser(function (userObject, done) {
 	userType = userObject.schemaType;
-	console.log(userType);
 	done(null, userObject.id);
 });
 

@@ -7,24 +7,22 @@ const Campaign = require("../models/campaign.js");
 
 // Ngo Signup
 router.post("/ngosignup", (req, res) => {
-	Ngo.register(
-		{ name: req.body.name, email: req.body.email },
-		req.body.password,
-		function (err, ngo) {
-			if (err) return res.status(401).json({ message: err.message });
-			else {
-				if (ngo)
-					return res.status(201).json({ message: "Account created successfully", newNGO: ngo });
-				else return res.status(400).json({ message: "Sorry. Your account couldn't be created" });
-			}
+	const { name, email, password } = req.body;
+	Ngo.register({ name, email }, password, function (err, ngo) {
+		if (err) return res.status(401).json({ message: err.message });
+		else {
+			if (ngo)
+				return res.status(201).json({ message: "Account created successfully", newNGO: ngo });
+			else return res.status(400).json({ message: "Sorry. Your account couldn't be created" });
 		}
-	);
+	});
 });
 
 router.post("/ngologin", (req, res) => {
+	const { email, password } = req.body;
 	const ngo = new Ngo({
-		email: req.body.email,
-		password: req.body.password,
+		email,
+		password,
 	});
 	req.login(ngo, error => {
 		if (error) res.json({ message: error.message });
@@ -38,12 +36,7 @@ router.post("/ngologin", (req, res) => {
 
 //Create Campaign
 router.post("/createCampaign", (req, res) => {
-	const cname = req.body.cname;
-	const description = req.body.description;
-	const startDate = req.body.startDate;
-	const endDate = req.body.endDate;
-	const category = req.body.category;
-	const createdBy = req.body.createdBy;
+	const { cname, description, startDate, endDate, category, createdBy } = req.body;
 
 	if (cname && description && startDate && endDate && category && createdBy) {
 		// console.log(cname, description, startDate, endDate, category);

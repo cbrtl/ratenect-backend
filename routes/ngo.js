@@ -11,9 +11,8 @@ router.post("/ngosignup", (req, res) => {
 	const { name, email, password } = req.body;
 	Ngo.register({ name, email }, password, (err, ngo) => {
 		if (err) return res.status(401).json({ message: err.message });
-		if (ngo)
-				return res.status(201).json({ message: "Account created successfully", newNGO: ngo });
-			return res.status(400).json({ message: "Sorry. Your account couldn't be created" });
+		if (ngo) return res.status(201).json({ message: "Account created successfully", newNGO: ngo });
+		return res.status(400).json({ message: "Sorry. Your account couldn't be created" });
 	});
 });
 
@@ -67,7 +66,7 @@ router.get("/searchngos", (req, res) => {
 	}).exec((error, foundNgos) => {
 		if (error) res.status(400).json(error);
 		else if (foundNgos) res.status(200).json(foundNgos);
-			else res.status(400).json({ message: "No results found." });
+		else res.status(400).json({ message: "No results found." });
 	});
 });
 

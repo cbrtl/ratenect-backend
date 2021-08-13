@@ -9,8 +9,8 @@ router.post("/usersignup", (req, res) => {
 	User.register({ name, email }, password, (err, user) => {
 		if (err) return res.status(401).json({ message: err.message });
 		if (user)
-				return res.status(201).json({ message: "Account created successfully", newUser: user });
-			return res.status(400).json({ message: "Sorry. Your account couldn't be created" });
+			return res.status(201).json({ message: "Account created successfully", newUser: user });
+		return res.status(400).json({ message: "Sorry. Your account couldn't be created" });
 	});
 });
 

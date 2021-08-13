@@ -10,11 +10,11 @@ const campaignSchema = new mongoose.Schema({
 		required: true,
 	},
 	startDate: {
-		type: String, //Date
+		type: String, // Date
 		required: true,
 	},
 	endDate: {
-		type: String, //Date
+		type: String, // Date
 		required: true,
 	},
 	category: {

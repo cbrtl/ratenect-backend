@@ -13,11 +13,7 @@ const User = require("../models/user");
 
 env.config({ path: "../.env" });
 
-const dbUser = process.env.dbUser;
-const dbPwd = process.env.dbPwd;
-const dbId = process.env.dbId;
-const dbName = process.env.dbName;
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.use(cors());
@@ -38,7 +34,7 @@ app.use(passport.session());
 
 mongoose
 	.connect(
-		`mongodb+srv://${dbUser}:${dbPwd}@${dbId}.mongodb.net/${dbName}?retryWrites=true&w=majority`,
+		`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_ID}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
 		{
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
@@ -71,8 +67,8 @@ passport.deserializeUser(function (id, done) {
 app.use("/api", ngoRoutes);
 app.use("/api", userRoutes);
 
-app.listen(port, () => {
-	console.log(`Server started at port ${port}`);
+app.listen(PORT, () => {
+	console.log(`Server started at port ${PORT}`);
 });
 
 app.get("/", (_, res) => {

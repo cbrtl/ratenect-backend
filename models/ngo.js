@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const passport = require("passport");
-const passportLocalMongoose = require("passport-local-mongoose");
-const findOrCreate = require("mongoose-findorcreate");
+const mongoose = require('mongoose');
+const passport = require('passport');
+const passportLocalMongoose = require('passport-local-mongoose');
+const findOrCreate = require('mongoose-findorcreate');
 
 const ngoSchema = new mongoose.Schema({
 	name: {
@@ -19,18 +19,18 @@ const ngoSchema = new mongoose.Schema({
 	},
 	schemaType: {
 		type: String,
-		default: "NGO",
+		default: 'NGO',
 	},
 	googleId: {
 		type: String,
 	},
 });
 
-ngoSchema.plugin(passportLocalMongoose, { usernameField: "email" });
+ngoSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 ngoSchema.plugin(findOrCreate);
 
-const Ngo = mongoose.model("Ngo", ngoSchema);
+const Ngo = mongoose.model('Ngo', ngoSchema);
 
-passport.use("ngo-local", Ngo.createStrategy());
+passport.use('ngo-local', Ngo.createStrategy());
 
 module.exports = Ngo;

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const campaignSchema = new mongoose.Schema({
 	cname: {
@@ -24,9 +24,9 @@ const campaignSchema = new mongoose.Schema({
 	createdBy: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true,
-		ref: "ngoSchema",
+		ref: 'ngoSchema',
 	},
 });
 
-const createCampaign = mongoose.model("Campaign", campaignSchema);
+const createCampaign = mongoose.model('Campaign', campaignSchema);
 module.exports = createCampaign;

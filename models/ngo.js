@@ -1,8 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
-const findOrCreate = require('mongoose-findorcreate');
-
+const findOrCreate = require("mongoose-findorcreate");
 
 const ngoSchema = new mongoose.Schema({
 	name: {
@@ -16,19 +15,18 @@ const ngoSchema = new mongoose.Schema({
 		trim: true,
 	},
 	password: {
-		type: String
+		type: String,
 	},
 	schemaType: {
 		type: String,
-		default: "NGO"
+		default: "NGO",
 	},
-	googleId:{
-		type: String
-	}
-
+	googleId: {
+		type: String,
+	},
 });
 
-ngoSchema.plugin(passportLocalMongoose, {usernameField: "email"});
+ngoSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 ngoSchema.plugin(findOrCreate);
 
 const Ngo = mongoose.model("Ngo", ngoSchema);

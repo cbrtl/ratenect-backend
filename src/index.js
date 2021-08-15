@@ -22,6 +22,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(express.json());
 
+app.enable('trust proxy');
+app.use(cors({
+	origin: 'http://localhost:3000/',
+	credentials: true,
+}))
+
 app.use(
 	session({
 		secret: process.env.secret,

@@ -32,7 +32,7 @@ app.use(
 
 app.use(
 	session({
-		secret: process.env.secret,
+		secret: process.env.SECRET,
 		resave: false,
 		saveUninitialized: false,
 	})

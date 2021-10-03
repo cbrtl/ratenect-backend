@@ -27,8 +27,9 @@ router.post('/userlogin', (req, res) => {
 	req.login(user, (error) => {
 		if (error) res.json({ message: error.message });
 		else {
-			passport.authenticate('user-local')(req, res, () => {
-				res.json({ message: 'You have successfully logged in' });
+			passport.authenticate('user-local')(req, res, (err) => {
+				if (err) res.json({ message: err.message });
+				else res.json({ message: 'You have successfully logged in' });
 			});
 		}
 	});

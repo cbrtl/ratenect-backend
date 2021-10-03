@@ -28,10 +28,12 @@ router.post('/ngologin', (req, res) => {
 		password,
 	});
 	req.login(ngo, (error) => {
-		if (error) res.json({ message: error.message });
-		else {
-			passport.authenticate('ngo-local')(req, res, () => {
-				res.json({ message: 'You have successfully logged in' });
+		if (error) {
+			res.json({ message: error.message });
+		} else {
+			passport.authenticate('ngo-local')(req, res, (err) => {
+				if (err) res.json({ message: err.message });
+				else res.json({ message: 'You have successfully logged in' });
 			});
 		}
 	});

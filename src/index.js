@@ -85,9 +85,9 @@ app.get('/', (_, res) => {
 
 // TEST TO CHECK AUTHENTICATION
 app.get('/testuser', (req, res) => {
-	if (req.isAuthenticated() && userType === 'USER')
-		res.json({ message: 'Welcome to Ratenect!' });
-	else res.json({ message: 'Authentication unsuccessful' });
+	if (req.isAuthenticated() && userType === 'USER') {
+		res.json({ message: 'Welcome to Ratenect!', user: req.user });
+	} else res.json({ message: 'Authentication unsuccessful' });
 });
 
 app.get('/testngo', (req, res) => {

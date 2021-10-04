@@ -96,8 +96,8 @@ app.get('/testngo', (req, res) => {
 	else res.status(401).json({ message: 'Authentication unsuccessful' });
 });
 
-// LOGOUT 
+// LOGOUT
 app.get('/logout', (req, res) => {
-  req.logout();
-	res.status(200).json({ message: 'Logout Successful'})
+	req.logout();
+	res.status(200).json({ message: 'Logout Successful' });
 });

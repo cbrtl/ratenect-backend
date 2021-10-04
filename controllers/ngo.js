@@ -30,7 +30,7 @@ exports.ngologin = (req, res) => {
 		} else {
 			passport.authenticate('ngo-local')(req, res, (err) => {
 				if (err) res.json({ message: err.message });
-				else res.json({ message: 'You have successfully logged in' });
+				else res.json({ message: 'You have successfully logged in', user: req.user });
 			});
 		}
 	});

@@ -86,12 +86,18 @@ app.get('/', (_, res) => {
 // TEST TO CHECK AUTHENTICATION
 app.get('/testuser', (req, res) => {
 	if (req.isAuthenticated() && userType === 'USER') {
-		res.json({ message: 'Welcome to Ratenect!', user: req.user });
-	} else res.json({ message: 'Authentication unsuccessful' });
+		res.status(200).json({ message: 'Welcome to Ratenect!', user: req.user });
+	} else res.status(401).json({ message: 'Authentication unsuccessful' });
 });
 
 app.get('/testngo', (req, res) => {
 	if (req.isAuthenticated() && userType === 'NGO')
-		res.json({ message: 'Welcome to Ratenect!' });
-	else res.json({ message: 'Authentication unsuccessful' });
+		res.status(200).json({ message: 'Welcome to Ratenect!' });
+	else res.status(401).json({ message: 'Authentication unsuccessful' });
+});
+
+// LOGOUT 
+app.get('/logout', (req, res) => {
+  req.logout();
+	res.status(200).json({ message: 'Logout Successful'})
 });

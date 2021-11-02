@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
+/* eslint-disable prefer-template */
+/* eslint-disable import/newline-after-import */
 const express = require('express');
 const mongoose = require('mongoose');
 const env = require('dotenv');
 const cors = require('cors');
-
 const app = express();
 const session = require('express-session');
 const passport = require('passport');
@@ -25,10 +27,12 @@ app.use(express.json());
 app.enable('trust proxy');
 app.use(
 	cors({
-		origin: 'http://localhost:3000/',
+		origin: 'http://localhost:3000',
 		credentials: true,
 	})
 );
+
+const mongodbURL = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_ID}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 app.use(
 	session({
@@ -43,7 +47,7 @@ app.use(passport.session());
 
 mongoose
 	.connect(
-		`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_ID}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+		mongodbURL,
 		{
 			useNewUrlParser: true,
 			useUnifiedTopology: true,

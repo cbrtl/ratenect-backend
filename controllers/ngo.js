@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 const passport = require('passport');
 const Ngo = require('../models/ngo');
 const Campaign = require('../models/campaign');
@@ -5,7 +7,7 @@ const Campaign = require('../models/campaign');
 // SIGNUP
 exports.ngosignup = (req, res) => {
 	const { name, email, password } = req.body;
-	Ngo.register({ name, email }, password, (err, ngo) => {
+	Ngo.register({ name, email, date: '' }, password, (err, ngo) => {
 		if (err) return res.status(401).json({ message: err.message });
 		if (ngo)
 			return res
@@ -42,19 +44,35 @@ exports.ngologin = (req, res) => {
 
 // CREATE CAMPAIGN
 exports.createCampaign = (req, res) => {
-	const { cname, description, startDate, endDate, category, createdBy } =
+	if(req.isAuthenticated()){
+		console.log(req.body);
+		const { 
+			name,
+      shortDesc,
+      startDate,
+      regEndDate,
+      eventDetails,
+      incentives,
+      volNum,
+      tagsArray
+		 } =
 		req.body;
 
-	if (cname && description && startDate && endDate && category && createdBy) {
+		const createdBy = req.user;
+
+	if (name && eventDetails && startDate && regEndDate && shortDesc && createdBy && incentives && volNum && tagsArray) {
 		// console.log(cname, description, startDate, endDate, category);
 
 		const newCampaign = new Campaign({
-			cname,
-			description,
+			name,
+			shortDesc,
 			startDate,
-			endDate,
-			category,
-			createdBy,
+			regEndDate,
+			eventDetails,
+			incentives,
+			volNum,
+			tags: tagsArray,
+			createdBy
 		});
 
 		newCampaign.save((err, data) => {
@@ -63,8 +81,78 @@ exports.createCampaign = (req, res) => {
 				.status(200)
 				.json({ Message: 'Successfully Listed', Data: data });
 		});
+	}else res.status(400).json({ Message: 'Please fill all the fields' });
+	}else{
+		res.status(400).json({message: 'You are not logged in'});
 	}
 };
+
+// SAVE NGO PROFILE
+exports.saveNgoProfile = (req, res) => {
+	const {ngoId} = req.params;
+	console.log(ngoId);
+	console.log(req.body);
+	// res.status(200).json({message: 'Profile saved successfully'});
+	const{
+		landline,
+		mobile,
+		addressLine1,
+		addressLine2,
+		description,
+		category,
+	  websiteLink,
+		pincode,
+		city,
+		state,
+		country,
+		dateOfFoundation,
+		founderFirstName,
+		founderLastName,
+		secretaryFirstName,	
+		secretaryLastName,
+		financeFirstName,
+		financeLastName
+	} = req.body;
+	
+	Ngo.updateOne(
+		{ _id: ngoId },
+		{$set:{
+			dateOfFoundation,
+			websiteLink,
+			contactNum: {
+				landline,
+				mobile
+			},
+			address: {
+				addressLine1,
+				addressLine2,
+				pincode,
+				city,
+				state,
+				country
+			},
+			founder: {
+				firstName: founderFirstName,
+				lastName: founderLastName
+			},
+			secretary: {
+				firstName: secretaryFirstName,
+				lastName: secretaryLastName
+			},
+			financeTrustee: {
+				firstName: financeFirstName,
+				lastName: financeLastName
+			},
+			aboutUs: description,
+			category
+		}},
+		(error, updatedNgo) => {
+			if (error) res.status(400).json(error);
+			else if (updatedNgo)
+				res.status(200).json({ message: 'Successfully updated', data: updatedNgo });
+		}		
+	)
+}
 
 // SEARCH FUNCTIONALITY
 exports.searchNgos = (req, res) => {
@@ -80,3 +168,11 @@ exports.searchNgos = (req, res) => {
 		else res.status(400).json({ message: 'No results found.' });
 	});
 };
+
+exports.getNgoData = (req, res) => {
+	// if(req.isAuthenticated()){
+		res.status(200).json({user: req.user});
+	// }else{
+	// 	res.status(400).json({message: 'You are not logged in'});
+	// }
+}

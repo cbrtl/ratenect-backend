@@ -46,14 +46,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 mongoose
-	.connect(
-		mongodbURL,
-		{
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-			useCreateIndex: true,
-		}
-	)
+	.connect(mongodbURL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		useCreateIndex: true,
+	})
 	.then(() => {
 		console.log('Database connected.');
 	});

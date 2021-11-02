@@ -26,7 +26,7 @@ const campaignSchema = new mongoose.Schema({
 		required: true,
 	},
 	createdBy: {
-		type: mongoose.Schema.Types.ObjectId, 
+		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Ngo',
 		required: true,
 	},
@@ -36,9 +36,9 @@ const campaignSchema = new mongoose.Schema({
 		required: true,
 		default: 'active',
 	},
-	volNum:{
-		type: Number
-	}
+	volNum: {
+		type: Number,
+	},
 });
 
 const createCampaign = mongoose.model('Campaign', campaignSchema);

@@ -67,13 +67,13 @@ const ngoSchema = new mongoose.Schema(
 				// required: true,
 			},
 			country: {
-				type: String
+				type: String,
 				// required: true,
 			},
 		},
 		founder: {
 			firstName: {
-				type: String
+				type: String,
 				// required: true,
 			},
 			lastName: {

@@ -1,31 +1,44 @@
 const mongoose = require('mongoose');
 
 const campaignSchema = new mongoose.Schema({
-	cname: {
+	name: {
 		type: String,
 		required: true,
 	},
-	description: {
+	shortDesc: {
+		type: String,
+		required: true,
+	},
+	eventDetails: {
+		type: String,
+		required: true,
+	},
+	incentives: {
 		type: String,
 		required: true,
 	},
 	startDate: {
-		type: String, // Date
+		type: Date, // Date
 		required: true,
 	},
-	endDate: {
-		type: String, // Date
-		required: true,
-	},
-	category: {
-		type: String,
+	regEndDate: {
+		type: Date, // Date
 		required: true,
 	},
 	createdBy: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId, 
+		ref: 'Ngo',
 		required: true,
-		ref: 'ngoSchema',
 	},
+	tags: [String],
+	status: {
+		type: String,
+		required: true,
+		default: 'active',
+	},
+	volNum:{
+		type: Number
+	}
 });
 
 const createCampaign = mongoose.model('Campaign', campaignSchema);

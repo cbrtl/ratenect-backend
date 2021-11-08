@@ -1,8 +1,13 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable consistent-return */
+/* eslint-disable arrow-body-style */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 const passport = require('passport');
 const Ngo = require('../models/ngo');
 const Campaign = require('../models/campaign');
+const { count } = require('../models/ngo');
 
 // SIGNUP
 exports.ngosignup = (req, res) => {
@@ -45,7 +50,6 @@ exports.ngologin = (req, res) => {
 // CREATE CAMPAIGN
 exports.createCampaign = (req, res) => {
 	if (req.isAuthenticated()) {
-		console.log(req.body);
 		const {
 			name,
 			shortDesc,
@@ -86,9 +90,11 @@ exports.createCampaign = (req, res) => {
 
 			newCampaign.save((err, data) => {
 				if (err) return res.status(400).json({ Message: err });
-				return res
+				Ngo.updateOne({_id: req.user._id}, { "$push": { campaigns: newCampaign._id } }, ()=>{
+					return res
 					.status(200)
 					.json({ Message: 'Successfully Listed', Data: data });
+				});
 			});
 		} else res.status(400).json({ Message: 'Please fill all the fields' });
 	} else {
@@ -182,10 +188,28 @@ exports.searchNgos = (req, res) => {
 	});
 };
 
-exports.getNgoData = (req, res) => {
+exports.getNgoData = async (req, res) => {
 	// if(req.isAuthenticated()){
-	res.status(200).json({ user: req.user });
+	const ngo = await Ngo.findById({ _id: req.user._id });
+	 res.status(200).json({ user: ngo });
 	// }else{
 	// 	res.status(400).json({message: 'You are not logged in'});
 	// }
 };
+
+exports.getNgoCampaignDetails = async(req, res) => {
+	const {campaigns} = req.user;
+	console.log(campaigns);
+	const campaignDataArray = [];
+	let loopCount = 0;
+	campaigns.forEach(async(campaign) => {
+		console.log(campaign);
+		const campaignData = await Campaign.findById({_id: campaign});
+		campaignDataArray.push(campaignData);
+		loopCount++;
+		if(loopCount === campaigns.length){
+			console.log(campaignDataArray);
+			res.status(200).json({campaigns: campaignDataArray});
+		}
+	})
+}

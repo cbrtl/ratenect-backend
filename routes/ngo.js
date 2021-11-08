@@ -9,6 +9,7 @@ const {
 	searchNgos,
 	saveNgoProfile,
 	getNgoData,
+	getNgoCampaignDetails
 } = require('../controllers/ngo');
 // const {getUserData} = require('../common-middleware/getUserData');
 
@@ -18,5 +19,6 @@ router.post('/createCampaign', createCampaign);
 router.post('/saveNgoProfile/:ngoId', saveNgoProfile);
 router.get('/searchngos', searchNgos);
 router.get('/getNgoData', getNgoData);
+router.get('/getNgoCampaignDetails', getNgoCampaignDetails);
 
 module.exports = router;

@@ -151,10 +151,12 @@ const ngoSchema = new mongoose.Schema(
 			type: String,
 			// required: true
 		},
-		campaigns: [{ 
-			type: mongoose.Schema.Types.ObjectId, 
-			ref: 'Campaign' 
-		}],
+		campaigns: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Campaign',
+			},
+		],
 	},
 	{ timestamps: true }
 );

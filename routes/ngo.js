@@ -9,7 +9,7 @@ const {
 	searchNgos,
 	saveNgoProfile,
 	getNgoData,
-	getNgoCampaignDetails
+	getNgoCampaignDetails,
 } = require('../controllers/ngo');
 // const {getUserData} = require('../common-middleware/getUserData');
 

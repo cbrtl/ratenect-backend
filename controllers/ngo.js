@@ -90,11 +90,15 @@ exports.createCampaign = (req, res) => {
 
 			newCampaign.save((err, data) => {
 				if (err) return res.status(400).json({ Message: err });
-				Ngo.updateOne({_id: req.user._id}, { "$push": { campaigns: newCampaign._id } }, ()=>{
-					return res
-					.status(200)
-					.json({ Message: 'Successfully Listed', Data: data });
-				});
+				Ngo.updateOne(
+					{ _id: req.user._id },
+					{ $push: { campaigns: newCampaign._id } },
+					() => {
+						return res
+							.status(200)
+							.json({ Message: 'Successfully Listed', Data: data });
+					}
+				);
 			});
 		} else res.status(400).json({ Message: 'Please fill all the fields' });
 	} else {
@@ -191,25 +195,25 @@ exports.searchNgos = (req, res) => {
 exports.getNgoData = async (req, res) => {
 	// if(req.isAuthenticated()){
 	const ngo = await Ngo.findById({ _id: req.user._id });
-	 res.status(200).json({ user: ngo });
+	res.status(200).json({ user: ngo });
 	// }else{
 	// 	res.status(400).json({message: 'You are not logged in'});
 	// }
 };
 
-exports.getNgoCampaignDetails = async(req, res) => {
-	const {campaigns} = req.user;
+exports.getNgoCampaignDetails = async (req, res) => {
+	const { campaigns } = req.user;
 	console.log(campaigns);
 	const campaignDataArray = [];
 	let loopCount = 0;
-	campaigns.forEach(async(campaign) => {
+	campaigns.forEach(async (campaign) => {
 		console.log(campaign);
-		const campaignData = await Campaign.findById({_id: campaign});
+		const campaignData = await Campaign.findById({ _id: campaign });
 		campaignDataArray.push(campaignData);
 		loopCount++;
-		if(loopCount === campaigns.length){
+		if (loopCount === campaigns.length) {
 			console.log(campaignDataArray);
-			res.status(200).json({campaigns: campaignDataArray});
+			res.status(200).json({ campaigns: campaignDataArray });
 		}
-	})
-}
+	});
+};
